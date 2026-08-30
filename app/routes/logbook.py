@@ -1,12 +1,17 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.models.schemas import LogbookGenerateRequest, LogbookGenerateResponse
+from app.security import require_internal_secret
 from app.services.ai_formatter import generate_logbook_entry
 
 router = APIRouter(prefix="/ai/logbook", tags=["logbook"])
 
 
-@router.post("/generate", response_model=LogbookGenerateResponse)
+@router.post(
+    "/generate",
+    response_model=LogbookGenerateResponse,
+    dependencies=[Depends(require_internal_secret)],
+)
 def generate(payload: LogbookGenerateRequest) -> LogbookGenerateResponse:
     """Stateless: raw activities/skills in, formatted SIWES entry out. No persistence."""
     try:

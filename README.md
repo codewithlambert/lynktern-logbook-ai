@@ -14,7 +14,7 @@ background/batch jobs. Persistence and orchestration are the Next.js app's job.
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-copy .env.example .env   # fill in MISTRAL_API_KEY
+copy .env.example .env   # fill in MISTRAL_API_KEY and INTERNAL_API_SECRET
 ```
 
 ## Run
@@ -26,6 +26,11 @@ uvicorn app.main:app --reload
 ## Endpoint
 
 `POST /ai/logbook/generate`
+
+Requires an `X-Internal-Secret` header matching `INTERNAL_API_SECRET`. Missing or
+wrong value gets a `401`. This is not user auth - it's a shared secret between this
+service and its one intended caller (the Next.js backend), so a stranger who finds
+the hosted URL can't spend your Mistral quota.
 
 Request:
 ```json

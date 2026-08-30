@@ -8,6 +8,7 @@ class Settings(BaseSettings):
 
     mistral_api_key: str
     mistral_model: str = "mistral-small-latest"  # free tier: 1M tokens/month
+    internal_api_secret: str
 
 
 @lru_cache
