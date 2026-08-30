@@ -11,6 +11,11 @@ app = FastAPI(
 app.include_router(logbook.router)
 
 
+@app.get("/")
+def root() -> dict:
+    return {"status": "ok"}
+
+
 @app.get("/health")
 def health_check() -> dict:
     return {"status": "ok"}
